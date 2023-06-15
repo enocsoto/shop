@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { ProductImage } from './product-image.entity';
 
-@Entity()
+@Entity({name: 'products'})
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -45,7 +45,7 @@ export class Product {
   sizes: string[];
 
   @Column('text')
-  gander: string;
+  gender: string;
 
   @Column('text', {
     array: true,

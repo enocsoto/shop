@@ -1,20 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { ProductsService } from 'src/products/products.service';
+import { initialData } from './data/seed-data';
+import { promises } from 'dns';
 
 @Injectable()
 export class SeedService {
-  constructor(
-    private readonly productsService: ProductsService,
-  ) {}
+  constructor(private readonly productsService: ProductsService) {}
 
   async runSeed() {
     await this.insertNewProducts();
-
     return `Seed executed`;
   }
 
   private async insertNewProducts() {
-   await this.productsService.deleteAllProducts()
-    return true;
+    await this.productsService.deleteAllProducts();
+
+    const products = initialData.products;
+    const insertPromises = [];
+
+    products.forEach((product) => {
+      insertPromises.push(this.productsService.create(product));
+    });
+
+    const results = await Promise.all(insertPromises);
+
+    return results;
   }
 }
