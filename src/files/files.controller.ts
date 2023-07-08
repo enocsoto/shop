@@ -14,6 +14,8 @@ import { fileFilter, fileNamer } from './helpers';
 import { diskStorage } from 'multer';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { createReadStream } from 'fs';
+createReadStream
 
 
 @Controller('files')
@@ -51,7 +53,7 @@ findProductImage(
       }
 
       const secureUrl = `${this.configService.get('HOST_API')}/files/product/${file.filename}`;
-      return {secureUrl}
+      return {secureUrl};
     }
   }
   

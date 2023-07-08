@@ -3,7 +3,6 @@ export const fileFilter = (
   file: Express.Multer.File,
   callback: Function,
 ) => {
-  //console.log(file);
   if (!file) return callback(new Error('File is Empty'), false);
 
   const fileExtension = file.mimetype.split('/')[1];
