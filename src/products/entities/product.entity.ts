@@ -3,12 +3,14 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductImage } from './product-image.entity';
+import { User } from 'src/auth/entities/user.entity';
 
-@Entity({name: 'products'})
+@Entity({ name: 'products' })
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -53,6 +55,9 @@ export class Product {
   })
   tags: string[];
 
+  @ManyToOne(() => User, (user) => user.product, {eager:true})
+  user:User
+
   @BeforeInsert()
   checkSlugInsert() {
     if (!this.slug) {
@@ -71,7 +76,8 @@ export class Product {
       .replaceAll("'", '');
   }
   @OneToMany(() => ProductImage, (productImage) => productImage.product, {
-    cascade: true, eager: true // eager permite traer la informacion de entity images
+    cascade: true,
+    eager: true, // eager permite traer la informacion de entity images
   })
   images?: ProductImage[];
 }
